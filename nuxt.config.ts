@@ -109,8 +109,8 @@ export default defineNuxtConfig({
       ],
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
-    // baseURL: process.env.NODE_ENV === "production" ? "/maos-design/" : "/",
-    baseURL: "/maos-design/",
+    // baseURL: process.env.NODE_ENV === "production" ? "/maos-admin/" : "/",
+    baseURL: "/maos-admin/",
     buildAssetsDir: "/static/",
   },
 
@@ -122,6 +122,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/**": { prerender: true }, // 告訴Nuxt所有路由都要prerender
+    "/**": { prerender: false }, // 告訴Nuxt所有路由都要prerender
   },
 });
