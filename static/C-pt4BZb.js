@@ -1,1 +1,0 @@
-import{u as e}from"./nJ_Piq8K.js";import{G as a,aU as o,c as t,o as r}from"./DH-SaT5f.js";const _=a({__name:"index",setup(n){return e().firstPage===""&&o("/designer/decal-designer"),(p,c)=>(r(),t("div"))}});export{_ as default};
