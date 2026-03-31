@@ -7,17 +7,18 @@
 
     <div class="final-preview mt-12" ref="printContainerRef">
       <div class="preview-container" ref="printContentRef">
-        <div class="preview-plate" :style="{ backgroundColor: currentPlate?.color }">
+        <!-- <div class="preview-plate" :style="{ backgroundColor: currentPlate?.color }"> -->
+        <div class="preview-plate" :style="{ background: currentPlate?.image ? `url(${currentPlate.image}) no-repeat center / cover` : '#ffffff' }">
           <!-- 預覽盤子上的圖案 -->
           <div
             v-for="pattern in placedPatterns"
             :key="pattern.id + '-preview'"
             class="plate-pattern-container"
             :style="{
-              width: pattern.size.width + 'px',
-              height: pattern.size.height + 'px',
-              left: pattern.x + 'px',
-              top: pattern.y + 'px',
+              width: pattern.size.width * 1.8 + 'px',
+              height: pattern.size.height * 1.8 + 'px',
+              left: pattern.x / 1.4 + 'px',
+              top: pattern.y / 1.4 + 'px',
               // transform: `rotate(${pattern.rotation}deg)`,
               transform: `rotate(${pattern.rotation}deg) scale(${pattern.scale})`,
             }"

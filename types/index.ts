@@ -76,6 +76,7 @@ export interface Plate {
     width: number;
     height: number;
   };
+  image: string;
   icon: string;
   iconColor: string;
   color: string;

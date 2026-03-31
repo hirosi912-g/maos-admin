@@ -4,21 +4,18 @@
 
 export default defineNuxtConfig({
   // compatibilityDate: "2025-07-15",
-  devtools: {
-    enabled: true,
-  },
 
   // SSR (SEO)
-  ssr: true,
-  // target: "static", // 靜態站點生成
+  ssr: true, // 关闭服务器端渲染，启用客户端渲染
 
-  // ssr: false,
-  // nitro: {
-  //   prerender: {
-  //     crawlLinks: true, // 讓 Nuxt 自動爬取連結並生成對應的 HTML
-  //   },
+  devtools: { enabled: true },
+
+  // devServer: {
+  //   host: "0.0.0.0",
+  //   port: 3000,
   // },
 
+  
   // generate: {
   //   routes: ["/"], // 只生成首页
   // },
@@ -27,10 +24,7 @@ export default defineNuxtConfig({
   //   publicPath: "./_nuxt/", // 注意：Nuxt 3 中可能需要额外配置
   // },
 
-  devServer: {
-    host: "0.0.0.0",
-    port: 3000,
-  },
+  
 
   // 启用 TypeScript 和 JSX 支持
   typescript: {
@@ -46,9 +40,11 @@ export default defineNuxtConfig({
     },
   ],
 
-  modules: ["@nuxt/ui", "@element-plus/nuxt", "@pinia/nuxt", "@nuxtjs/i18n", "dayjs-nuxt", "nuxt-svgo"],
+  modules: ["@nuxt/devtools", "@nuxt/ui", "@element-plus/nuxt", "@pinia/nuxt", "@nuxtjs/i18n", "dayjs-nuxt", "nuxt-svgo"],
 
   css: ["element-plus/dist/index.css", "~/assets/index.scss", "~/assets/css/main.css"],
+
+  
 
   // // UnoCSS 配置
   // unocss: {
@@ -118,10 +114,12 @@ export default defineNuxtConfig({
     preset: "github_pages", // 為GitHub Pages做優化打包
     prerender: {
       routes: ["/"], // 指定要預渲染 (prerender)的頁面
+      // crawlLinks: true, // 自動尋找連結生成 HTML
+      // failOnError: false, // 即使某頁報錯(如 window is not defined)，也強制完成 build 產出 index.html
     },
   },
 
   routeRules: {
-    "/**": { prerender: false }, // 告訴Nuxt所有路由都要prerender
+    "/**": { prerender: true }, // 告訴Nuxt所有路由都要prerender
   },
 });

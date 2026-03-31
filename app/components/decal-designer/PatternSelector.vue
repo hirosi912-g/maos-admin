@@ -10,9 +10,12 @@
     <div class="patterns-grid">
       <div v-for="pattern in filteredPatterns" :key="pattern.id" class="pattern-card" @click="addPattern(pattern.id)" @dragstart="onDragStart(pattern, $event)" draggable="true">
         <!-- <div class="pattern-thumbnail" v-html="pattern.svg" /> -->
-        <img :src="pattern.image" :alt="pattern.name" class="pattern-img" />
+         <div class="pattern-img">
+          <img :src="pattern.image" :alt="pattern.name" class="w-full h-full object-contain" />
+         </div>
+        <!-- <img :src="pattern.image" :alt="pattern.name" class="pattern-img" /> -->
         <div class="pattern-info">
-          <span class="pattern-name">{{ pattern.name }}</span>
+          <span class="pattern-name">{{ appStore.locale === "zh-TW" ? pattern.name_zh : pattern.name_en }}</span>
           <!-- <el-tag size="small">{{ $t(pattern.category) }}</el-tag> -->
         </div>
       </div>
@@ -42,8 +45,11 @@
 
 <script setup lang="ts">
 import type { SelectMenuItem } from "@nuxt/ui";
-import { GetPatterns } from "@/api"
+// import { GetPatterns } from "@/api"
+const appStore = useAppStore();
 const designStore = useDesignStore();
+
+designStore.loadPatterns();
 
 // 分類選項
 const categories = ref<SelectMenuItem[]>([

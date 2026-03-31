@@ -1,21 +1,20 @@
 <template>
   <div class="">
     <h2 class="design-panel-title">
-       <Icon name="material-symbols:circle" class="text-blue-500" />
-      <span>{{$t('_designer.selectPlate')}}</span>
+      <Icon name="material-symbols:circle" class="text-blue-500" />
+      <span>{{ $t("_designer.selectPlate") }}</span>
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div
-        v-for="plate in designStore.plates"
-        :key="plate.id"
-        :class="['plate-card', { active: designStore.currentPlate?.id === plate.id }]"
-        @click="designStore.selectPlate(plate.id)"
-      >
-        <div class="w-18 h-18 rounded-full mx-auto mb-2 flex items-center justify-center" :style="{ backgroundColor: plate.color }">
+      <div v-for="plate in plates" :key="plate.id" :class="['plate-card', { active: designStore.currentPlate?.id === plate.id }]" @click="designStore.selectPlate(plate.id)">
+        <!-- <div class="w-18 h-18 rounded-full mx-auto mb-2 flex items-center justify-center" :style="{ backgroundColor: plate.color }">
           <i :class="plate.icon" :style="{ color: plate.iconColor, fontSize: '1.5rem' }"></i>
+        </div> -->
+        <div class="rounded-full mx-auto mb-2 flex items-center justify-center">
+          <img :src="plate.image" :alt="plate.name" class="w-18 h-18 object-contain" />
         </div>
         <div class="text-center plate-info text-gray-800">
-          <h4>{{ plate.name }}</h4>
+          <!-- <h4>{{ plate.name }}</h4> -->
+          <h4>{{ appStore.locale === "zh-TW" ? plate.name_zh : plate.name_en }}</h4>
         </div>
         <div class="plate-info text-gray-800">
           <p>{{ $t("_designer.size") }}: {{ plate.size.width }} × {{ plate.size.height }}mm</p>
@@ -28,24 +27,15 @@
 
 <script setup lang="ts">
 // import IconPlate from "@/assets/images/svg/plate.svg";
-
+const appStore = useAppStore();
 const designStore = useDesignStore();
 
 designStore.loadPlates();
+
+const plates = computed(() => designStore.plates);
 </script>
 
 <style lang="scss" scoped>
-// .panel-title {
-//   font-size: 1.3rem;
-//   color: #2c3e50;
-//   margin-bottom: 20px;
-//   padding-bottom: 10px;
-//   border-bottom: 2px solid #3498db;
-//   display: flex;
-//   align-items: center;
-//   gap: 10px;
-// }
-
 .plate-card {
   border: 2px solid #e8e8e8;
   border-radius: 8px;

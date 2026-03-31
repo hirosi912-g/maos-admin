@@ -30,93 +30,64 @@ export const useDesignStore = defineStore("design", {
       // const patternPrice = state.placedPatterns.length * 5; // 每個圖案加5元
       return basePrice + patternPrice;
     },
-
-    // plateOptions: (): any[] => [
-    //   { id: "1", name: "經典白瓷", color: "#ffffff", icon: "i-mdi-circle", iconColor: "#f0f0f0", shadowColor: "rgba(0,0,0,0.1)", size: { width: 300, height: 300 }, price: 199 },
-    //   {
-    //     id: "2",
-    //     name: "粉色瓷盤",
-    //     color: "#f8bbd0",
-    //     icon: "i-mdi-circle",
-    //     iconColor: "#f48fb1",
-    //     shadowColor: "rgba(244,143,177,0.3)",
-    //     size: { width: 290, height: 290 },
-    //     price: 189,
-    //   },
-    //   {
-    //     id: "3",
-    //     name: "金色邊盤",
-    //     color: "#fff9c4",
-    //     icon: "i-mdi-circle-outline",
-    //     iconColor: "#ffd54f",
-    //     shadowColor: "rgba(255,213,79,0.3)",
-    //     size: { width: 350, height: 350 },
-    //     price: 299,
-    //   },
-    // ],
-
-    // patternOptions: (): Pattern[] => [
-    //   { id: "1", name: "花朵", image: "/patterns/flower.svg", type: "flower", defaultSize: 50 },
-    //   { id: "2", name: "星星", image: "/patterns/star.svg", type: "geometric", defaultSize: 50 },
-    //   // { id: 3, name: "愛心", image: "/patterns/heart.svg", type: "heart", defaultSize: 50, },
-    //   // { id: 4, name: "葉子", image: "/patterns/leaf.svg", type: "leaf" },
-    //   // { id: 5, name: "蝴蝶", image: "/patterns/butterfly.svg", type: "butterfly" },
-    //   { id: "6", name: "幾何", image: "/patterns/geometric.svg", type: "geometric", defaultSize: 50 },
-    //   // { id: 7, name: "動物", image: "/patterns/animal.svg", type: "animal" },
-    //   // { id: 8, name: "抽象", image: "/patterns/abstract.svg", type: "abstract" },
-    // ],
   },
 
   actions: {
+    // Get Plates API
     async loadPlates() {
+      this.plates = [];
+      this.currentPlate = null;
       const response = await GetPlates();
-      this.plates = response.items;
-      // response.items.forEach((item: any) => {
-      //   this.plates.push({
-      //     id: item.id,
-      //     name_en: item.title_translations.en,
-      //     name_zh: item.title_translations["zh-hant"],
-      //     type: item.type,
-      //   });
-      // });
-
-      console.log("Loaded plates:", this.plates);
-      // 模擬API調用
-      this.plates = [
-        {
-          id: "1",
-          name: "經典白瓷",
-          type: "white",
-          size: { width: 300, height: 300 },
-          icon: "i-mdi-circle",
-          iconColor: "#f0f0f0",
-          color: "#ffffff",
-          shadowColor: "rgba(0,0,0,0.1)",
-          price: 199,
-        },
-        {
-          id: "2",
-          name: "粉色瓷盤",
-          type: "pink",
-          icon: "i-mdi-circle",
-          iconColor: "#f48fb1",
-          color: "#f8bbd0",
-          shadowColor: "rgba(244,143,177,0.3)",
-          size: { width: 290, height: 290 },
-          price: 189,
-        },
-        {
-          id: "3",
-          name: "金色邊盤",
-          type: "golden",
-          icon: "i-mdi-circle-outline",
-          iconColor: "#ffd54f",
-          color: "#fff9c4",
-          shadowColor: "rgba(255,213,79,0.3)",
+      console.log("Loaded plates:", response.items);
+      response.items.forEach((item: any) => {
+        this.plates.push({
+          id: item.id,
+          name_en: item.title_translations.en,
+          name_zh: item.title_translations["zh-hant"],
+          image: item.medias?.[0]?.images.source.url || "",
+          type: item.type,
           size: { width: 350, height: 350 },
-          price: 299,
-        },
-      ];
+          price: item.price.dollar || 300,
+        });
+      });
+
+      // console.log("Loaded plates:", this.plates);
+      // 模擬API調用
+      // this.plates = [
+      //   {
+      //     id: "1",
+      //     name: "經典白瓷",
+      //     type: "white",
+      //     size: { width: 300, height: 300 },
+      //     icon: "i-mdi-circle",
+      //     iconColor: "#f0f0f0",
+      //     color: "#ffffff",
+      //     shadowColor: "rgba(0,0,0,0.1)",
+      //     price: 199,
+      //   },
+      //   {
+      //     id: "2",
+      //     name: "粉色瓷盤",
+      //     type: "pink",
+      //     icon: "i-mdi-circle",
+      //     iconColor: "#f48fb1",
+      //     color: "#f8bbd0",
+      //     shadowColor: "rgba(244,143,177,0.3)",
+      //     size: { width: 290, height: 290 },
+      //     price: 189,
+      //   },
+      //   {
+      //     id: "3",
+      //     name: "金色邊盤",
+      //     type: "golden",
+      //     icon: "i-mdi-circle-outline",
+      //     iconColor: "#ffd54f",
+      //     color: "#fff9c4",
+      //     shadowColor: "rgba(255,213,79,0.3)",
+      //     size: { width: 350, height: 350 },
+      //     price: 299,
+      //   },
+      // ];
 
       if (this.plates.length > 0 && !this.currentPlate) {
         if (this.plates[0]) {
@@ -125,16 +96,17 @@ export const useDesignStore = defineStore("design", {
       }
     },
 
+    // Get Patterns API
     async loadPatterns() {
       this.patterns = [];
       const response = await GetPatterns();
-      // this.patterns = response.items;
+      // console.log("Loaded patterns:", response.items);
       response.items.forEach((item: any) => {
         this.patterns.push({
           id: item.id,
           name_en: item.title_translations["en"],
           name_zh: item.title_translations["zh-hant"],
-          price: item.price,
+          price: item.price.dollar || 0,
           type: item.type,
           category: item.category_id,
           image: item.medias?.[0]?.images.source.url || "",
@@ -143,7 +115,6 @@ export const useDesignStore = defineStore("design", {
         });
       });
 
-      console.log("Loaded patterns:", this.patterns);
       // 模擬圖案數據
       // this.patterns = [
       //   {

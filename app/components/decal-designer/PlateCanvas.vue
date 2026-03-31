@@ -13,9 +13,10 @@
           ref="plateContainer"
           class="relative rounded-full shadow-lg mt-6 mb-8"
           :style="{
-            backgroundColor: currentPlate?.color,
-            boxShadow: `0 10px 30px ${currentPlate?.shadowColor}`,
-            width: currentPlate?.size.width * 2 + 'px',
+            background: currentPlate?.image ? `url(${currentPlate.image}) no-repeat center / cover` : '#ffffff',
+            // backgroundColor: currentPlate?.color,
+            // boxShadow: `0 10px 30px ${currentPlate?.shadowColor}`,
+            width:  currentPlate?.size.width * 2 + 'px',
             height: currentPlate?.size.height * 2 + 'px',
           }"
           @click="clearSelection"
@@ -35,8 +36,8 @@
               top: pattern.y + 'px',
               transform: `rotate(${pattern.rotation}deg) scale(${pattern.scale})`,
               fontSize: getPatternSize(pattern.patternId) + 'px',
-              width: pattern.size.width * 2 + 'px',
-              height: pattern.size.height * 2 + 'px',
+              width: pattern.size.width* 2 + 'px',
+              height: pattern.size.height* 2 + 'px',
             }"
             @mousedown="startDrag(pattern.id, $event)"
             @click="selectPatternOnPlate(pattern.id)"
@@ -78,7 +79,6 @@
           </el-button>
         </div>
       </div>
-
     </div>
 
     <!-- 當前選擇資訊 -->
@@ -138,6 +138,12 @@ watch(selectedPattern, (newPattern) => {
     scaleValue.value = newPattern.scale;
   }
 });
+
+// watch(currentPlate, (newPlate) => {
+//   if (newPlate) {
+//     designStore.selectPlate(newPlate.id);
+//   }
+// });
 
 // 方法
 const getPatternSvg = (patternId: string) => {
@@ -388,8 +394,8 @@ const saveDesign = () => {
 };
 
 // 初始化
-designStore.loadPlates();
-designStore.loadPatterns();
+// designStore.loadPlates();
+// designStore.loadPatterns();
 </script>
 
 <style scoped>

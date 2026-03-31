@@ -21,7 +21,7 @@ export const useAppStore = defineStore("app", () => {
 
   const title = import.meta.env.VITE_APP_TITLE;
 
-  const locale = ref<string>(getLocale() || "");
+  const locale = ref<string>(getLocale() || "zh-TW");
 
   const sidebar: Sidebar = reactive({
     opened: getSidebarStatus() !== SIDEBAR_CLOSED,
